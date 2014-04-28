@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Basic Authentication Examples</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="/css/application.css">
+</head>
+<body>
+  <div class="navbar navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#/home">Home</a></li>
+          <li><a href="#/about">About</a></li>
+          <li><a href="#/contact">Contact</a></li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#/login" class="login">Login</a></li>
+          <li class="dropdown auth-controls">
+            <a href="javascript:void(0);" class="dropdown-toggle username" data-toggle="dropdown">username</a>
+            <ul class="dropdown-menu">
+              <li><a href="#/account">Account</a></li>
+              <li><a href="#/settings">Settings</a></li>
+              <li class="divider"></li>
+              <li><a href="#/logout" class="logout">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="page page-home">
+      <div class="error-template-render"></div>
+      <div class="about">
+        <h1>Basic Authentication Examples</h1>
+        <p class="lead">
+          This is a basic single-page web application that shows how to implement both
+          cookie and token based authentication in Node.js. The code is for illustrative
+          purposes only and if you need authentication, <a href="http://passportjs.org">Passport</a>
+          is the solution you should look to.
+        </p>
+        <p>
+          Run the app with either:<br>
+          <code>AUTH='cookie' node index.js</code><br>
+          <code>AUTH='token' node index.js</code><br>
+        </p>
+      </div>
+      <div class="panel panel-warning">
+        <div class="panel-heading">Known Issues &amp; Limitations</div>
+        <div class="panel-body">
+          <ul>
+            <li>Users are stored in memory and not persisted.</li>
+            <li>It assumes that <code>localStorage</code> is available.</li>
+            <li>It assumes modern browsers.</li>
+            <li>It uses local storage to store the username in cookie mode.</li>
+            <li>The front end handles both cookie and local storage instead of splitting it up.</li>
+          </ul>
+        </div>
+      </div>
+      <p>
+        You'll have to <a href="#/login">log in</a> to access
+        <a href="#/account">the account page</a>.<br>
+        The <a href="#/contact">contact page</a> has some interesting stuff going on as
+        well.
+      </p>
+    </div>
+
+    <div class="page page-about">
+      <div class="error-template-render"></div>
+      <h1>About</h1>
+      <p>Page intentionally left blank.</p>
+    </div>
+
+    <div class="page page-contact">
+      <div class="error-template-render"></div>
+      <h1>Contact</h1>
+      <p>
+        This page makes two AJAX requests. One is for a resource that requires authentication, the
+        other is for a resource that doesn't. When you're logged in, you'll see both resources. If
+        you're not logged in, you should expect to see <code>unprotected resource</code>
+        returned from the server, and an error for the request that required authentication.
+      </p>
+
+      <script id="contact-1-template" type="text/x-underscore-template">
+        <p>Successfully retrieved <code><%= data %></code> from the server.</p>
+      </script>
+      <div class="contact-1-template-render"></div>
+      <script id="contact-2-template" type="text/x-underscore-template">
+        <p>Successfully retrieved <code><%= data %></code> from the server.</p>
+      </script>
+      <div class="contact-2-template-render"></div>
+    </div>
+
+    <div class="page page-account">
+      <div class="error-template-render"></div>
+      <h1>Account</h1>
+      <script id="account-template" type="text/x-underscore-template">
+        <p>Successfully retrieved <code><%= data %></code> from the server.</p>
+      </script>
+      <div class="account-template-render"></div>
+    </div>
+
+    <div class="page page-settings">
+      <div class="error-template-render"></div>
+      <h1>Settings</h1>
+      <script id="settings-template" type="text/x-underscore-template">
+        <p>Successfully retrieved <code><%= data %></code> from the server.</p>
+      </script>
+      <div class="settings-template-render"></div>
+    </div>
+
+    <div class="page page-logout">
+    <!-- never shown -->
+    </div>
+
+    <script id="error-template" type="text/x-underscore-template">
+      <div class="alert alert-danger fade in">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <strong><%= title %></strong> <span><%= message %></span>
+      </div>
+    </script>
+
+    <div class="page page-signup">
+      <div class="error-template-render"></div>
+      <form class="form-auth form-signup" role="form">
+        <h2 class="form-auth-heading">Please sign up</h2>
+        <input name="email" type="email" class="form-control" placeholder="Email address" required autofocus>
+        <input name="password" type="password" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+      </form>
+    </div>
+
+    <div class="page page-login">
+      <div class="error-template-render"></div>
+      <form class="form-auth form-signin" role="form">
+        <h2 class="form-auth-heading">Please sign in</h2>
+        <input name="email" type="email" class="form-control" placeholder="Email address" required autofocus>
+        <input name="password" type="password" class="form-control" placeholder="Password" required>
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+          <a href="#/signup" class="signup">Sign up</a>
+        </label>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+    </div>
+
+  </div>
+
+  <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
+  <script src="/js/application.js"></script>
+</body>
+</html>

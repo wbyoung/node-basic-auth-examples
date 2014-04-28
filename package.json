@@ -9,13 +9,19 @@
   "author": "Whitney Young",
   "license": "MIT",
   "dependencies": {
-    "express": "~4.1.1"
+    "express": "~4.1.1",
+    "body-parser": "~1.0.2",
+    "cookie-parser": "~1.0.1",
+    "bcrypt": "~0.7.8",
+    "lodash": "~2.4.1",
+    "q": "~1.0.1"
   },
   "devDependencies": {
     "istanbul": "~0.2.7",
     "coveralls": "~2.10.0",
     "mocha": "~1.18.2",
-    "chai": "^1.9.1",
-    "sinon": "^1.9.1"
+    "chai": "~1.9.1",
+    "request": "~2.34.0",
+    "tough-cookie": "~0.12.1"
   }
 }
