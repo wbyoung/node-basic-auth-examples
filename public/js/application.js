@@ -39,6 +39,7 @@ $(function() {
       else {
         $auth.hide();
         $noAuth.show();
+        $('.request-data').text('');
       }
       $('.username').text(auth.username());
       $('.form-auth input').val('');
