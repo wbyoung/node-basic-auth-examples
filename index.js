@@ -8,6 +8,7 @@ var create = module.exports = function(authType) {
   var auth = require('./lib/auth');
   var resources = require('./resources');
 
+  app.set('view engine', 'hbs');
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(require('body-parser')());
   app.use(require('cookie-parser')('your secret here'));
@@ -18,6 +19,9 @@ var create = module.exports = function(authType) {
   app.post('/users/signin', auth.routes.signin);
   app.post('/users/signout', auth.routes.signout);
 
+  app.get('/', function(req, res) {
+    res.render('index', { type: authType });
+  });
   app.get('/unprotected', resources.unprotected);
   app.get('/protected', resources.protected);
 

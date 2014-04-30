@@ -1,35 +1,12 @@
-/* global window, localStorage, jQuery, $, _ */
+/* global window, jQuery, $, _ */
 
 'use strict';
 
 $(function() {
   /**
-   * Storage
-   */
-  var store = function() {
-    var key = arguments[0];
-    var value = arguments[1];
-    if (arguments.length === 1) { return localStorage.getItem(key); }
-    else if (arguments.length === 2) {
-      if (value) { localStorage.setItem(key, value); }
-      else { localStorage.removeItem(key); }
-    }
-  };
-
-  /**
    * Authentication
    */
-  var auth = {
-    cookie: function(name) {
-      return _(document.cookie.split(';'))
-      .map(function(pair) {
-        return pair.trim().split('=');
-      })
-      .reduce(function(obj, pair) {
-        obj[pair[0]] = pair[1];
-        return obj;
-      }, {})[name];
-    },
+  var auth = _.extend({}, window.Application.auth, {
     protect: function(fn, message) {
       return function(e) {
         if (!auth.authenticated()) {
@@ -42,15 +19,8 @@ $(function() {
         }
         else { fn.apply(this, arguments); }
       };
-    },
-    login: function(username, token) {
-      store('username', username);
-      store('auth-token', token);
-    },
-    authenticated: function() {
-      return store('auth-token') || auth.cookie('auth-authorized');
     }
-  };
+  });
 
   /**
    * General application logic.
@@ -70,7 +40,7 @@ $(function() {
         $auth.hide();
         $noAuth.show();
       }
-      $('.username').text(localStorage.getItem('username'));
+      $('.username').text(auth.username());
       $('.form-auth input').val('');
     },
     afterLogin: function() {
@@ -83,22 +53,6 @@ $(function() {
     }
   };
   app.setup();
-
-
-  /**
-   * Add authentication token to all ajax requests.
-   */
-  $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    var token = store('auth-token');
-    if (token) {
-      options.beforeSend = (function(orig) {
-        return function(xhr) {
-          xhr.setRequestHeader('auth-token', token);
-          return orig.apply(this, arguments);
-        };
-      })(options.beforeSend || function() {});
-    }
-  });
 
 
   /**
@@ -161,7 +115,7 @@ $(function() {
           data: $form.serializeArray()
         })
         .success(function(data, status, xhr) {
-          auth.login(data.username, data.token);
+          auth.login(data);
           app.afterLogin();
         })
         .error(error.handler(capitalized + ' Error'));
@@ -190,7 +144,7 @@ $(function() {
   $(window).on('app:transition:logout', function(e, $page) {
     $.ajax('/users/signout', { method: 'post' })
     .success(function(data, status, xhr) {
-      auth.login(null, null);
+      auth.login({});
       app.afterLogout();
     })
     .error(error.handler('Logout Error'));
