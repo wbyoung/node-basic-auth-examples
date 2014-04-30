@@ -16,7 +16,7 @@ var port = 383273;
 var baseURL = util.format('http://localhost:%d', port);
 
 var shouldBehaveLikeAllAuthenticators = function() {
-  beforeEach(function(done) { db.reset().then(function() { done() }); });
+  beforeEach(function(done) { db.reset().then(function() { done(); }); });
   beforeEach(function() { var r = this.request(); get = r.get; post = r.post; });
   before(function(done) {
     server = require('..')(this.auth).listen(port, done);

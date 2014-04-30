@@ -17,7 +17,7 @@ var port = 383273;
 var baseURL = util.format('http://localhost:%d', port);
 
 describe('cookie auth', function() {
-  beforeEach(function(done) { db.reset().then(function() { done() }); });
+  beforeEach(function(done) { db.reset().then(function() { done(); }); });
   beforeEach(function() { var r = _request(); get = r.get; post = r.post; });
   before(function(done) {
     var app = require('..')('cookie');

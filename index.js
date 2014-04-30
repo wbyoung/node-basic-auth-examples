@@ -8,7 +8,7 @@ var create = module.exports = function(authType) {
   var auth = require('./lib/auth');
   var resources = require('./resources');
 
-  app.use(express.static(path.join(__dirname, 'public')))
+  app.use(express.static(path.join(__dirname, 'public')));
   app.use(require('body-parser')());
   app.use(require('cookie-parser')('your secret here'));
   app.use(auth.middleware[authType]());
