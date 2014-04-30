@@ -20,8 +20,7 @@ describe('cookie auth', function() {
   beforeEach(function(done) { db.reset().then(function() { done() }); });
   beforeEach(function() { var r = _request(); get = r.get; post = r.post; });
   before(function(done) {
-    var auth = require('../lib/auth/cookie');
-    var app = require('..')(auth);
+    var app = require('..')('cookie');
     app.get('/cookie-reading-url', function(req, res) {
       res.json({ signed: req.signedCookies, unsigned: req.cookies });
     });

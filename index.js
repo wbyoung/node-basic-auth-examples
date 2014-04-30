@@ -3,13 +3,15 @@
 var express = require('express');
 var path = require('path');
 
-var create = module.exports = function(auth) {
+var create = module.exports = function(authType) {
   var app = express();
-  var resources = require('./resources')(auth);
+  var auth = require('./lib/auth');
+  var resources = require('./resources');
 
   app.use(express.static(path.join(__dirname, 'public')))
   app.use(require('body-parser')());
   app.use(require('cookie-parser')('your secret here'));
+  app.use(auth.middleware[authType]());
 
   app.post('/users/create', auth.routes.createUser);
   app.post('/users/signin', auth.routes.signin);
@@ -23,10 +25,9 @@ var create = module.exports = function(auth) {
 
 if (require.main === module) {
   var port = process.env.PORT || 3000;
-  var authName = process.env.AUTH || 'token';
-  var auth = require('./lib/auth/' + authName.toLowerCase());
+  var auth = (process.env.AUTH || 'token').toLowerCase();
 
   create(auth).listen(port, function() {
-    console.log('Express server started on port %s using %s auth', port, authName);
+    console.log('Express server started on port %s using %s auth', port, auth);
   });
 }

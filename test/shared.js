@@ -131,8 +131,7 @@ var shouldBehaveLikeAllAuthenticators = function() {
 ['cookie', 'token'].forEach(function(authName) {
   describe(authName + ' auth', function() {
     before(function() {
-      this.authName = authName;
-      this.auth = require('../lib/auth/' + authName);
+      this.auth = authName;
       this.request = require('./' + authName).request;
     });
     shouldBehaveLikeAllAuthenticators();

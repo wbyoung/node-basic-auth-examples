@@ -19,8 +19,7 @@ describe('token auth', function() {
   beforeEach(function(done) { db.reset().then(function() { done() }); });
   beforeEach(function() { var r = _request(); get = r.get; post = r.post; });
   before(function(done) {
-    var auth = require('../lib/auth/token');
-    var app = require('..')(auth);
+    var app = require('..')('token');
     server = app.listen(port, done);
   });
   after(function(done) {
