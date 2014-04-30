@@ -50,7 +50,7 @@ describe('cookie auth', function() {
     })
     .spread(function(res, body) {
       body = JSON.parse(body);
-      expect(body.signed['auth-token']).to.match(/[0-9a-z]{16}/);
+      expect(body.signed['auth-id']).to.match(/[0-9a-z\-]{36}/);
     })
     .then(done).done();
   });
