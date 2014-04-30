@@ -48,7 +48,7 @@ $(function() {
       store('auth-token', token);
     },
     authenticated: function() {
-      return store('auth-token') || auth.cookie('auth-token');
+      return store('auth-token') || auth.cookie('auth-authorized');
     }
   };
 
