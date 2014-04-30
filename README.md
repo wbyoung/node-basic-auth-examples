@@ -11,11 +11,11 @@ Run the app with either:
 `AUTH='cookie' node index.js`  
 `AUTH='token' node index.js`  
 
-[travis-url]: http://travis-ci.org/wbyoung/basic-auth-examples
-[travis-image]: https://secure.travis-ci.org/wbyoung/basic-auth-examples.png?branch=master
-[codeclimate-image]: https://codeclimate.com/github/wbyoung/basic-auth-examples.png
-[codeclimate-url]: https://codeclimate.com/github/wbyoung/basic-auth-examples
-[coverage-image]: https://coveralls.io/repos/wbyoung/basic-auth-examples/badge.png
-[coverage-url]: https://coveralls.io/r/wbyoung/basic-auth-examples
-[david-image]: https://david-dm.org/wbyoung/basic-auth-examples.png?theme=shields.io
-[david-url]: https://david-dm.org/wbyoung/basic-auth-examples
+[travis-url]: http://travis-ci.org/wbyoung/node-basic-auth-examples
+[travis-image]: https://secure.travis-ci.org/wbyoung/node-basic-auth-examples.png?branch=master
+[codeclimate-image]: https://codeclimate.com/github/wbyoung/node-basic-auth-examples.png
+[codeclimate-url]: https://codeclimate.com/github/wbyoung/node-basic-auth-examples
+[coverage-image]: https://coveralls.io/repos/wbyoung/node-basic-auth-examples/badge.png
+[coverage-url]: https://coveralls.io/r/wbyoung/node-basic-auth-examples
+[david-image]: https://david-dm.org/wbyoung/node-basic-auth-examples.png?theme=shields.io
+[david-url]: https://david-dm.org/wbyoung/node-basic-auth-examples
