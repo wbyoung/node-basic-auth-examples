@@ -12,6 +12,7 @@ var create = module.exports = function(authType) {
   app.use(require('body-parser')());
   app.use(require('cookie-parser')('your secret here'));
   app.use(auth.middleware[authType]());
+  app.use(auth.middleware.user());
 
   app.post('/users/create', auth.routes.createUser);
   app.post('/users/signin', auth.routes.signin);
