@@ -1,12 +1,18 @@
 # Node Basic Authentication Examples
 
-[![NPM version][npm-image]][npm-url] [![Build status][travis-image]][travis-url] [![Code Climate][codeclimate-image]][codeclimate-url] [![Coverage Status][coverage-image]][coverage-url] [![Dependencies][david-image]][david-url]
+[![Build status][travis-image]][travis-url] [![Code Climate][codeclimate-image]][codeclimate-url] [![Coverage Status][coverage-image]][coverage-url] [![Dependencies][david-image]][david-url]
 
+This is a basic single-page web application that shows how to implement both
+cookie and token based authentication in Node.js. The code is for illustrative
+purposes only and if you need authentication, [Passport](http://passportjs.org)
+is the solution you should look to.
+
+Run the app with either:  
+`AUTH='cookie' node index.js`  
+`AUTH='token' node index.js`  
 
 [travis-url]: http://travis-ci.org/wbyoung/basic-auth-examples
 [travis-image]: https://secure.travis-ci.org/wbyoung/basic-auth-examples.png?branch=master
-[npm-url]: https://npmjs.org/package/basic-auth-examples
-[npm-image]: https://badge.fury.io/js/basic-auth-examples.png
 [codeclimate-image]: https://codeclimate.com/github/wbyoung/basic-auth-examples.png
 [codeclimate-url]: https://codeclimate.com/github/wbyoung/basic-auth-examples
 [coverage-image]: https://coveralls.io/repos/wbyoung/basic-auth-examples/badge.png
