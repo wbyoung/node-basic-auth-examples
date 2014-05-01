@@ -11,6 +11,8 @@ Run the app with either:
 `AUTH='cookie' node index.js`  
 `AUTH='token' node index.js`  
 
+A token version is [running here](http://node-basic-auth-examples.herokuapp.com).
+
 [travis-url]: http://travis-ci.org/wbyoung/node-basic-auth-examples
 [travis-image]: https://secure.travis-ci.org/wbyoung/node-basic-auth-examples.png?branch=master
 [codeclimate-image]: https://codeclimate.com/github/wbyoung/node-basic-auth-examples.png
