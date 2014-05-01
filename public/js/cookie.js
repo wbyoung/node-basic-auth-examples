@@ -3,7 +3,7 @@
 'use strict';
 
 (function(window) {
-  var cookie = {
+  window.applicationStorage = {
     get: function(key) {
       return _(document.cookie.split(';'))
       .map(function(pair) {
@@ -18,21 +18,4 @@
       document.cookie = key + '=' + value;
     }
   };
-
-
-  /**
-   * Application.auth methods.
-   */
-  _.merge(window, { Application: { auth: {
-    authenticated: function() {
-      return !!cookie.get('auth-authorized');
-    },
-    login: function(data) {
-      cookie.set('auth-username', data.username);
-    },
-    username: function() {
-      return cookie.get('auth-username');
-    }
-  }}});
-
 })(window);

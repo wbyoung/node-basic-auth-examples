@@ -6,7 +6,17 @@ $(function() {
   /**
    * Authentication
    */
-  var auth = _.extend({}, window.Application.auth, {
+  var storage = window.applicationStorage;
+  var auth = {
+    authenticated: function() {
+      return !!storage.get('auth-authorized') && !!storage.get('auth-username');
+    },
+    login: function(data) {
+      storage.set('auth-username', data.username);
+    },
+    username: function() {
+      return storage.get('auth-username');
+    },
     protect: function(fn, message) {
       return function(e) {
         if (!auth.authenticated()) {
@@ -20,7 +30,7 @@ $(function() {
         else { fn.apply(this, arguments); }
       };
     }
-  });
+  };
 
   /**
    * General application logic.

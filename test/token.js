@@ -34,9 +34,9 @@ describe('token auth', function() {
     };
     post({ url: baseURL + '/users', json: params })
     .spread(function(res, body) {
-      expect(Object.keys(body).length).to.eql(2);
+      expect(Object.keys(body).length).to.eql(1);
       expect(body.username).to.eql(params.email);
-      expect(body.token).to.match(/[0-9a-z]{16}/);
+      expect(res.headers['auth-token']).to.match(/[0-9a-z]{16}/);
     })
     .then(done).done();
   });
@@ -49,9 +49,9 @@ describe('token auth', function() {
       return post({ url: baseURL + '/sessions', json: params });
     })
     .spread(function(res, body) {
-      expect(Object.keys(body).length).to.eql(2);
+      expect(Object.keys(body).length).to.eql(1);
       expect(body.username).to.eql(params.email);
-      expect(body.token).to.match(/[0-9a-z]{16}/);
+      expect(res.headers['auth-token']).to.match(/[0-9a-z]{16}/);
     })
     .then(done).done();
   });
@@ -67,12 +67,12 @@ describe('token auth', function() {
     })
     .spread(function(res, body) {
       expect(res.statusCode).to.eql(200);
-      token = body.token; // capture token for use later
+      token = res.headers['auth-token']; // capture token for use later
       return post({ url: baseURL + '/sessions', json: { _method: 'delete' } });
     })
     .spread(function(res, body) {
       expect(res.statusCode).to.eql(200);
-      expect(body.token).to.be.null;
+      expect(res.headers['auth-token-invalidated']).to.eql('true');
       var headers = { 'auth-token': token }; // custom headers to re-use token
       return get({ url: baseURL + '/protected', headers: headers });
     })
@@ -87,7 +87,7 @@ describe('token auth', function() {
     post({ url: baseURL + '/sessions', json: { _method: 'delete' } })
     .spread(function(res, body) {
       expect(res.statusCode).to.eql(200);
-      expect(body.token).to.be.null;
+      expect(res.headers['auth-token-invalidated']).to.eql('true');
     }).then(done).done();
   });
 });
@@ -109,12 +109,10 @@ _request = exports.request = function() {
       }
       args.push(opts);
       args.push(function(error, res, body) {
-        try {
-          var json = body;
-          if (typeof body === 'string') { json = JSON.parse(body); }
-          if (json.token !== undefined) { authToken = json.token; }
+        authToken = res.headers['auth-token'];
+        if (res.headers['auth-token-invalidated']) {
+          authToken = null;
         }
-        catch (e) {}
         cb.call(this, error, res, body);
       });
       return fn.apply(this, args);
