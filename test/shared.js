@@ -14,7 +14,7 @@ var expect = chai.expect;
 var server = null;
 var get, post;
 var port = 383273;
-var baseURL = util.format('http://localhost:%d', port);
+var baseURL = util.format('http://localhost:%d/api', port);
 
 var shouldBehaveLikeAllAuthenticators = function() {
   beforeEach(function(done) { db.reset().then(function() { done(); }); });
@@ -27,7 +27,7 @@ var shouldBehaveLikeAllAuthenticators = function() {
   });
 
   it('automatically logs in new users', function(done) {
-    post({ url: baseURL + '/users/signup', json: {
+    post({ url: baseURL + '/users', json: {
       email: 'user@wbyoung.github.io',
       password: 'password'
     }})
@@ -43,7 +43,7 @@ var shouldBehaveLikeAllAuthenticators = function() {
     var params = { email: 'user@wbyoung.github.io', password: 'password' };
     User.create(params.email, params.password)
     .then(function(user) {
-      return post({ url: baseURL + '/users/signup', json: params });
+      return post({ url: baseURL + '/users', json: params });
     })
     .spread(function(res, body) {
       expect(res.statusCode).to.eql(401);
@@ -74,7 +74,7 @@ var shouldBehaveLikeAllAuthenticators = function() {
   it('authenticates users', function(done) {
     User.create('someone', 'password')
     .then(function(user) {
-      return post({ url: baseURL + '/users/signin', json: {
+      return post({ url: baseURL + '/sessions', json: {
         email: user.username,
         password: 'password'
       }});
@@ -90,7 +90,7 @@ var shouldBehaveLikeAllAuthenticators = function() {
   it('rejects invalid credentials', function(done) {
     User.create('someone', 'password')
     .then(function(user) {
-      return post({ url: baseURL + '/users/signin', json: {
+      return post({ url: baseURL + '/sessions', json: {
         email: user.username,
         password: 'wrong'
       }});
@@ -105,17 +105,16 @@ var shouldBehaveLikeAllAuthenticators = function() {
   it('signs out users', function(done) {
     User.create('user@somewhere.com', 'password')
     .then(function(user) {
-      return post({ url: baseURL + '/users/signin', json: {
+      return post({ url: baseURL + '/sessions', json: {
         email: user.username,
         password: 'password'
       }});
     })
     .spread(function(res, body) {
       expect(res.statusCode).to.eql(200);
-      return post({ url: baseURL + '/users/signout' });
+      return post({ url: baseURL + '/sessions', json: { _method: 'delete' } });
     })
     .spread(function(res, body) {
-      body = JSON.parse(body);
       expect(res.statusCode).to.eql(200);
       expect(body.success).to.be.true;
       return get({ url: baseURL + '/protected' });

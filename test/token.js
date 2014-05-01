@@ -14,7 +14,7 @@ var expect = chai.expect;
 var server = null;
 var get, post, _request;
 var port = 383273;
-var baseURL = util.format('http://localhost:%d', port);
+var baseURL = util.format('http://localhost:%d/api', port);
 
 describe('token auth', function() {
   beforeEach(function(done) { db.reset().then(function() { done(); }); });
@@ -32,7 +32,7 @@ describe('token auth', function() {
       email: 'user@wbyoung.github.io',
       password: 'password'
     };
-    post({ url: baseURL + '/users/signup', json: params })
+    post({ url: baseURL + '/users', json: params })
     .spread(function(res, body) {
       expect(Object.keys(body).length).to.eql(2);
       expect(body.username).to.eql(params.email);
@@ -46,7 +46,7 @@ describe('token auth', function() {
     User.create('someone', 'password')
     .then(function(user) {
       params = { email: user.username, password: 'password' };
-      return post({ url: baseURL + '/users/signin', json: params });
+      return post({ url: baseURL + '/sessions', json: params });
     })
     .spread(function(res, body) {
       expect(Object.keys(body).length).to.eql(2);
@@ -63,15 +63,14 @@ describe('token auth', function() {
     User.create('someone', 'password')
     .then(function(user) {
       params = { email: user.username, password: 'password' };
-      return post({ url: baseURL + '/users/signin', json: params });
+      return post({ url: baseURL + '/sessions', json: params });
     })
     .spread(function(res, body) {
       expect(res.statusCode).to.eql(200);
       token = body.token; // capture token for use later
-      return post({ url: baseURL + '/users/signout' });
+      return post({ url: baseURL + '/sessions', json: { _method: 'delete' } });
     })
     .spread(function(res, body) {
-      body = JSON.parse(body);
       expect(res.statusCode).to.eql(200);
       expect(body.token).to.be.null;
       var headers = { 'auth-token': token }; // custom headers to re-use token
@@ -85,9 +84,8 @@ describe('token auth', function() {
   });
 
   it('signs out when token is not provided', function(done) {
-    post({ url: baseURL + '/users/signout' })
+    post({ url: baseURL + '/sessions', json: { _method: 'delete' } })
     .spread(function(res, body) {
-      body = JSON.parse(body);
       expect(res.statusCode).to.eql(200);
       expect(body.token).to.be.null;
     }).then(done).done();

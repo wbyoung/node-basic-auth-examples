@@ -17,6 +17,7 @@
     "express": "~4.1.1",
     "body-parser": "~1.0.2",
     "cookie-parser": "~1.0.1",
+    "method-override": "~1.0.0",
     "hbs": "~2.6.0",
     "bcrypt": "~0.7.8",
     "lodash": "~2.4.1",

@@ -14,14 +14,14 @@ var expect = chai.expect;
 var server;
 var get, post, _request;
 var port = 383273;
-var baseURL = util.format('http://localhost:%d', port);
+var baseURL = util.format('http://localhost:%d/api', port);
 
 describe('cookie auth', function() {
   beforeEach(function(done) { db.reset().then(function() { done(); }); });
   beforeEach(function() { var r = _request(); get = r.get; post = r.post; });
   before(function(done) {
     var app = require('..')('cookie');
-    app.get('/cookie-reading-url', function(req, res) {
+    app.get('/api/cookie-reading-url', function(req, res) {
       res.json({ signed: req.signedCookies, unsigned: req.cookies });
     });
     server = app.listen(port, done);
@@ -32,7 +32,7 @@ describe('cookie auth', function() {
 
   it('creates new users', function(done) {
     var params = { email: 'user@wbyoung.github.io', password: 'password' };
-    post({ url: baseURL + '/users/signup', json: params })
+    post({ url: baseURL + '/users', json: params })
     .spread(function(res, body) {
       expect(Object.keys(body).length).to.eql(1);
       expect(body.username).to.eql(params.email);
@@ -41,7 +41,7 @@ describe('cookie auth', function() {
   });
 
   it('sets cookies', function(done) {
-    post({ url: baseURL + '/users/signup', json: {
+    post({ url: baseURL + '/users', json: {
       email: 'user@wbyoung.github.io',
       password: 'password'
     }})
@@ -60,7 +60,7 @@ describe('cookie auth', function() {
     User.create('someone', 'password')
     .then(function(user) {
       params = { email: user.username, password: 'password' };
-      return post({ url: baseURL + '/users/signin', json: params });
+      return post({ url: baseURL + '/sessions', json: params });
     })
     .spread(function(res, body) {
       expect(Object.keys(body).length).to.eql(1);

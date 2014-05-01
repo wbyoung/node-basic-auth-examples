@@ -101,12 +101,17 @@ $(function() {
    * Forms: login & signup
    */
   (function() {
-    _.forEach(['signin', 'signup'], function(name) {
-      var action = name;
+    var forms = [
+      { name: 'signin', action: '/api/sessions' },
+      { name: 'signup', action: '/api/users' },
+    ];
+    _.forEach(forms, function(info) {
+      var name = info.name;
+      var action = info.action;
       var capitalized = name[0].toUpperCase() + name.slice(1);
       var $form = $('.form-' + name);
       $form.submit(function(e) {
-        $.ajax('/users/' + action, {
+        $.ajax(action, {
           method: 'post',
           data: $form.serializeArray()
         })
@@ -125,20 +130,20 @@ $(function() {
    * Transitions
    */
   $(window).on('app:transition:account', auth.protect(function(e, $page) {
-    template.ajax('account', '/protected', $page);
+    template.ajax('account', '/api/protected', $page);
   }));
 
   $(window).on('app:transition:settings', auth.protect(function(e, $page) {
-    template.ajax('settings', '/protected', $page);
+    template.ajax('settings', '/api/protected', $page);
   }));
 
   $(window).on('app:transition:contact', function(e, $page) {
-    template.ajax('contact-1', '/protected', $page);
-    template.ajax('contact-2', '/unprotected', $page);
+    template.ajax('contact-1', '/api/protected', $page);
+    template.ajax('contact-2', '/api/unprotected', $page);
   });
 
   $(window).on('app:transition:logout', function(e, $page) {
-    $.ajax('/users/signout', { method: 'post' })
+    $.ajax('/api/sessions', { method: 'post', data: { _method: 'delete' } })
     .success(function(data, status, xhr) {
       auth.login({});
       app.afterLogout();
