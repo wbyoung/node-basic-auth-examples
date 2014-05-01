@@ -32,7 +32,7 @@ describe('token auth', function() {
       email: 'user@wbyoung.github.io',
       password: 'password'
     };
-    post({ url: baseURL + '/users/create', json: params })
+    post({ url: baseURL + '/users/signup', json: params })
     .spread(function(res, body) {
       expect(Object.keys(body).length).to.eql(2);
       expect(body.username).to.eql(params.email);

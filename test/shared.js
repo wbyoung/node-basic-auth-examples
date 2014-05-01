@@ -27,7 +27,7 @@ var shouldBehaveLikeAllAuthenticators = function() {
   });
 
   it('automatically logs in new users', function(done) {
-    post({ url: baseURL + '/users/create', json: {
+    post({ url: baseURL + '/users/signup', json: {
       email: 'user@wbyoung.github.io',
       password: 'password'
     }})
@@ -43,7 +43,7 @@ var shouldBehaveLikeAllAuthenticators = function() {
     var params = { email: 'user@wbyoung.github.io', password: 'password' };
     User.create(params.email, params.password)
     .then(function(user) {
-      return post({ url: baseURL + '/users/create', json: params });
+      return post({ url: baseURL + '/users/signup', json: params });
     })
     .spread(function(res, body) {
       expect(res.statusCode).to.eql(401);

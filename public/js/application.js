@@ -101,13 +101,8 @@ $(function() {
    * Forms: login & signup
    */
   (function() {
-    var forms = [
-      { name: 'signin', action: 'signin' },
-      { name: 'signup', action: 'create' },
-    ];
-    _.forEach(forms, function(info) {
-      var name = info.name;
-      var action = info.action;
+    _.forEach(['signin', 'signup'], function(name) {
+      var action = name;
       var capitalized = name[0].toUpperCase() + name.slice(1);
       var $form = $('.form-' + name);
       $form.submit(function(e) {

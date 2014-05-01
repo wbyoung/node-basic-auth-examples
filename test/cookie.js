@@ -32,7 +32,7 @@ describe('cookie auth', function() {
 
   it('creates new users', function(done) {
     var params = { email: 'user@wbyoung.github.io', password: 'password' };
-    post({ url: baseURL + '/users/create', json: params })
+    post({ url: baseURL + '/users/signup', json: params })
     .spread(function(res, body) {
       expect(Object.keys(body).length).to.eql(1);
       expect(body.username).to.eql(params.email);
@@ -41,7 +41,7 @@ describe('cookie auth', function() {
   });
 
   it('sets cookies', function(done) {
-    post({ url: baseURL + '/users/create', json: {
+    post({ url: baseURL + '/users/signup', json: {
       email: 'user@wbyoung.github.io',
       password: 'password'
     }})

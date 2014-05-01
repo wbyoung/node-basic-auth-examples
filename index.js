@@ -15,7 +15,7 @@ var create = module.exports = function(authType) {
   app.use(auth.middleware[authType]());
   app.use(auth.middleware.user());
 
-  app.post('/users/create', auth.routes.createUser);
+  app.post('/users/signup', auth.routes.createUser);
   app.post('/users/signin', auth.routes.signin);
   app.post('/users/signout', auth.routes.signout);
 
