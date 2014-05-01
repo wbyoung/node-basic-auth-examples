@@ -71,11 +71,67 @@
           </ul>
         </div>
       </div>
+
+      <h2>Explore</h2>
       <p>
         You'll have to <a href="#/login">log in</a> to access
         <a href="#/account">the account page</a>.<br>
         The <a href="#/contact">contact page</a> has some interesting stuff going on as
         well.
+      </p>
+
+      <h2>Details</h2>
+      <p>
+        The basic idea in this project is to demonstrate how you might implement
+        authentication different authentication sessions. The code explores two
+        possible ways to create sessions: <strong>cookie based</strong> and
+        <strong>token based</strong> sessions.
+      </p>
+      <p>
+        You'll want to explore the following files to get an idea of what's going on
+        in the backend:
+        <ul>
+          <li><code>lib/auth.js</code></li>
+          <li><code>lib/auth/types/cookie.js</code></li>
+          <li><code>lib/auth/types/token.js</code></li>
+        </ul>
+      </p>
+      <p>
+        The code that differentiates the two methods is isolated in the
+        <em>middleware</em> that each implements.
+      </p>
+
+      <h3>Cookies</h3>
+      <p>
+        The cookie based version simply stores the user's id in a signed cookie.
+        While the cookie, and therefore the user's id, is visible to the client, it's not possible
+        for someone to forge the cookie's value because it's been signed.
+      </p>
+      <p>
+        In order to ensure that cookie signatures cannot be forged, it's imperative that
+        you keep your set a custom <code>cookie-parser</code> secret in <code>index.js</code>
+        and keep it private.
+      </p>
+
+      <h3>Tokens</h3>
+      <p>
+        The token based version creates a new random token for the user each time
+        the user authenticates with a username and password. A hash of the token is stored
+        in the user model.
+      </p>
+      <p>
+        The token is changed each time the user logs in and out to reduce the impact of
+        a token being hijacked (see the security information below).
+      </p>
+      <p>
+        Because the token is changed during each login, the user is limited to only one
+        session being active at any given time. You could easily alter this when adding persistence
+        to support multiple active tokens.
+      </p>
+      <h2>Security</h2>
+      <p>
+        Neither of these schemes is secure unless run over TLS/SSL. Both cookies and tokens
+        can be hijacked from unencrypted web traffic and re-used maliciously.
       </p>
     </div>
 
