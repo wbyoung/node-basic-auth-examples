@@ -3,10 +3,15 @@
 var express = require('express');
 var path = require('path');
 
-var create = module.exports = function(authType) {
+var create = module.exports = function(authType, env) {
   var app = express();
   var auth = require('./lib/auth');
   var resources = require('./resources');
+  var log =
+    env == 'development' && 'dev' ||
+    env == 'production' && 'default';
+
+  if (log) { app.use(require('morgan')(log)); }
 
   app.set('view engine', 'hbs');
   app.use(express.static(path.join(__dirname, 'public')));
@@ -30,10 +35,11 @@ var create = module.exports = function(authType) {
 };
 
 if (require.main === module) {
+  var env = process.env.NODE_ENV || 'development';
   var port = process.env.PORT || 3000;
   var auth = (process.env.AUTH || 'token').toLowerCase();
 
-  create(auth).listen(port, function() {
+  create(auth, env).listen(port, function() {
     console.log('Express server started on port %s using %s auth', port, auth);
   });
 }
