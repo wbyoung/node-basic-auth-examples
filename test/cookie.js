@@ -3,7 +3,7 @@
 
 'use strict';
 
-var users = require('../lib/users');
+var User = require('../lib/models/user');
 var db = require('../lib/db');
 
 var q = require('q');
@@ -57,7 +57,7 @@ describe('cookie auth', function() {
 
   it('authenticates users', function(done) {
     var params;
-    users.create('someone', 'password')
+    User.create('someone', 'password')
     .then(function(user) {
       params = { email: user.username, password: 'password' };
       return post({ url: baseURL + '/users/signin', json: params });

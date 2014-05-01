@@ -3,8 +3,9 @@
 
 'use strict';
 
-var users = require('../lib/users');
+var User = require('../lib/models/user');
 var db = require('../lib/db');
+
 var q = require('q');
 var util = require('util');
 var chai = require('chai');
@@ -40,7 +41,7 @@ var shouldBehaveLikeAllAuthenticators = function() {
 
   it('does not allow creating user when one exists', function(done) {
     var params = { email: 'user@wbyoung.github.io', password: 'password' };
-    users.create(params.email, params.password)
+    User.create(params.email, params.password)
     .then(function(user) {
       return post({ url: baseURL + '/users/create', json: params });
     })
@@ -71,7 +72,7 @@ var shouldBehaveLikeAllAuthenticators = function() {
   });
 
   it('authenticates users', function(done) {
-    users.create('someone', 'password')
+    User.create('someone', 'password')
     .then(function(user) {
       return post({ url: baseURL + '/users/signin', json: {
         email: user.username,
@@ -87,7 +88,7 @@ var shouldBehaveLikeAllAuthenticators = function() {
   });
 
   it('rejects invalid credentials', function(done) {
-    users.create('someone', 'password')
+    User.create('someone', 'password')
     .then(function(user) {
       return post({ url: baseURL + '/users/signin', json: {
         email: user.username,
@@ -102,7 +103,7 @@ var shouldBehaveLikeAllAuthenticators = function() {
   });
 
   it('signs out users', function(done) {
-    users.create('user@somewhere.com', 'password')
+    User.create('user@somewhere.com', 'password')
     .then(function(user) {
       return post({ url: baseURL + '/users/signin', json: {
         email: user.username,
