@@ -82,8 +82,7 @@
 
       <h2>Details</h2>
       <p>
-        This project demonstrates how you might implement
-        authentication different authentication sessions. The code explores two
+        This project demonstrates how you might implement authentication. The code explores two
         possible ways to create sessions: <strong>cookie based</strong> and
         <strong>token based</strong> sessions.
       </p>
@@ -105,7 +104,8 @@
       <p>
         The cookie based version simply stores the user's id in a signed cookie.
         While the cookie, and therefore the user's id, is visible to the client, it's not possible
-        for someone to forge the cookie's value because it's been signed.
+        for someone to forge the cookie's value because it's been signed. Take care, however, to
+        ensure that a user's id does not reveal sensitive data and cannot be used maliciously.
       </p>
       <p>
         In order to ensure that cookie signatures cannot be forged, it's imperative that
