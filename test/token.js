@@ -90,6 +90,66 @@ describe('token auth', function() {
       expect(res.headers['auth-token-invalidated']).to.eql('true');
     }).then(done).done();
   });
+
+  it('can handle multiple sessions simultaneously', function(done) {
+    var params;
+    var token1 = null;
+    var token2 = null;
+
+    User.create('someone', 'password')
+    .then(function(user) {
+      params = { email: user.username, password: 'password' };
+      return post({ url: baseURL + '/sessions', json: params });
+    })
+    .spread(function(res, body) {
+      expect(res.statusCode).to.eql(200);
+      token1 = res.headers['auth-token']; // capture token for use later
+      return post({ url: baseURL + '/sessions', json: params });
+    })
+    .spread(function(res, body) {
+      expect(res.statusCode).to.eql(200);
+      token2 = res.headers['auth-token']; // capture token for use later
+      return post({ url: baseURL + '/sessions', json: params });
+    })
+    .spread(function(res, body) {
+      expect(res.statusCode).to.eql(200);
+      var headers = { 'auth-token': token1 }; // custom headers to re-use token
+      return get({ url: baseURL + '/protected', headers: headers });
+    })
+    .spread(function(res, body) {
+      expect(res.statusCode).to.eql(200);
+      var headers = { 'auth-token': token2 }; // custom headers to re-use token
+      return get({ url: baseURL + '/protected', headers: headers });
+    })
+    .spread(function(res, body) {
+      expect(res.statusCode).to.eql(200);
+      var headers = { 'auth-token': token2 }; // custom headers to re-use token
+      return post({ url: baseURL + '/sessions', json: { _method: 'delete' }, headers: headers });
+    })
+    .spread(function(res, body) {
+      expect(res.statusCode).to.eql(200);
+      var headers = { 'auth-token': token2 }; // custom headers to re-use token
+      return get({ url: baseURL + '/protected', headers: headers });
+    })
+    .spread(function(res, body) {
+      expect(res.statusCode).to.eql(401);
+      var headers = { 'auth-token': token1 }; // custom headers to re-use token
+      return get({ url: baseURL + '/protected', headers: headers });
+    })
+    .spread(function(res, body) {
+      expect(res.statusCode).to.eql(200);
+      var headers = { 'auth-token': token1 }; // custom headers to re-use token
+      return post({ url: baseURL + '/sessions', json: { _method: 'delete' }, headers: headers });
+    })
+    .spread(function(res, body) {
+      expect(res.statusCode).to.eql(200);
+      var headers = { 'auth-token': token1 }; // custom headers to re-use token
+      return get({ url: baseURL + '/protected', headers: headers });
+    })
+    .spread(function(res, body) {
+      expect(res.statusCode).to.eql(401);
+    }).then(done).done();
+  });
 });
 
 // create a wrapper that acts just like the request module, but that will read

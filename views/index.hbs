@@ -116,17 +116,13 @@
       <h3>Tokens</h3>
       <p>
         The token based version creates a new random token for the user each time
-        the user authenticates with a username and password. A hash of the token is stored
-        in the user model.
+        the user authenticates with a username and password. The token is associated with
+        the user's id and stored to the database to authenticate future requests.
       </p>
       <p>
-        The token is changed each time the user logs in and out to reduce the impact of
-        a token being hijacked (see the security information below).
-      </p>
-      <p>
-        Because the token is changed during each login, the user is limited to only one
-        session being active at any given time. You could easily alter this when adding persistence
-        to support multiple active tokens.
+        For security, a hash of the token is stored to the database. This ensures that even
+        if the database is compromised, an attacker won't be able to easily log in as they
+        only have the hash, not the require token.
       </p>
       <h2>Security</h2>
       <p>
