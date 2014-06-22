@@ -3,9 +3,9 @@
 [![Build status][travis-image]][travis-url] [![Code Climate][codeclimate-image]][codeclimate-url] [![Coverage Status][coverage-image]][coverage-url] [![Dependencies][david-image]][david-url]
 
 This is a basic single-page web application that shows how to implement both
-cookie and token based authentication in Node.js. The code is for illustrative
-purposes only and if you need authentication, [Passport](http://passportjs.org)
-is the solution you should look to.
+cookie and token based authentication in a Node.js API server. The code is for
+illustrative purposes only and if you need authentication,
+[Passport](http://passportjs.org) is the solution you should look to.
 
 Run the app with either:  
 `AUTH='cookie' node index.js`  
